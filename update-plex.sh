@@ -52,7 +52,7 @@ check_root() {
 }
 
 check_dependencies() {
-    local deps=("curl" "jq" "dpkg" "systemctl" "tar")
+    local deps=("curl" "jq" "dpkg" "apt" "systemctl" "tar")
     for cmd in "${deps[@]}"; do
         if ! command -v "$cmd" &> /dev/null; then
             log_error "Required command not found: $cmd"
@@ -198,7 +198,7 @@ install_package() {
 
     log "Installing Plex package: $package_path"
 
-    dpkg -i "$package_path" || {
+    apt install -y "$package_path" || {
         log_error "Failed to install package"
         # Try to restart service even if install failed
         start_plex_service
